@@ -134,7 +134,7 @@ public class MainFrame extends JFrame {
 //        jbtnconnect.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
-//                MainFrame.this.();
+//                MainFrame.this.connect();
 //                MainFrame.this.checkProgress();
 //            }
 //        });
@@ -181,11 +181,23 @@ public class MainFrame extends JFrame {
             }
         }
     }
+//    private void connect(){
+//
+//
+//            }
+//        }
+//    }
 
     int temp_line = 0;
 
     private void checkProgress() {
         for (int i = 0; i < jbts.length; i++) {
+//           if(jbtnconnect){
+//                jbtnstart.setEnabled(false);
+//                jbtnclear.setEnabled(false);
+//                jbtnauto.setEnabled(false);
+//                return;
+//            }
             if(jbts[i].getText().equals("")){
                 jbtnstart.setEnabled(false);
                 jbtnclear.setEnabled(true);
