@@ -131,13 +131,13 @@ public class MainFrame extends JFrame {
             }
         });
 
-//        jbtnconnect.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                MainFrame.this.connect();
-//                MainFrame.this.checkProgress();
-//            }
-//        });
+        jbtnconnect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.this.connect();
+                MainFrame.this.checkProgress();
+            }
+        });
 
         checkProgress();
 
@@ -181,23 +181,36 @@ public class MainFrame extends JFrame {
             }
         }
     }
-//    private void connect(){
-//
-//
-//            }
-//        }
-//    }
+    private void connect(){
+        String input;
+        input=jtfnconnect.getText();
+
+
+
+    }
 
     int temp_line = 0;
 
     private void checkProgress() {
+        if(jbtnconnect ) {
+            jbtnstart.setEnabled(true);
+            jbtnclear.setEnabled(true);
+            jbtnauto.setEnabled(true);
+            jbtnsend.setEnabled(true);
+
+        } if(jbtnconnect){
+            jbtnstart.setEnabled(false);
+            jbtnclear.setEnabled(false);
+            jbtnauto.setEnabled(false);
+            jbtnsend.setEnabled(false);
+        }
+            return;
+        }
+
+
+
         for (int i = 0; i < jbts.length; i++) {
-//           if(jbtnconnect){
-//                jbtnstart.setEnabled(false);
-//                jbtnclear.setEnabled(false);
-//                jbtnauto.setEnabled(false);
-//                return;
-//            }
+
             if(jbts[i].getText().equals("")){
                 jbtnstart.setEnabled(false);
                 jbtnclear.setEnabled(true);
