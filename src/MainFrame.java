@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
+
 public class MainFrame extends JFrame {
     private Container cp;
     private JButton jbtnstart = new JButton("Start");
@@ -13,15 +14,11 @@ public class MainFrame extends JFrame {
     private JButton jbtnsend = new JButton("Send");
     private JButton jbtnconnect = new JButton("Connect");
 
-    private JTextField jtfnconnect = new JTextField("");
-
     private JButton jbts[] = new JButton[25];
 
     private JPanel jplbingo = new JPanel(new GridLayout(5, 5, 3, 3));
     private JPanel jplsouth = new JPanel();
     private JPanel jpnc = new JPanel(new GridLayout(2, 2, 3, 3));
-    private JPanel jple = new JPanel(new GridLayout(2,1,3,3));
-
 
     private JTextArea jtaU = new JTextArea();
     private JTextArea jtaD = new JTextArea();
@@ -55,21 +52,15 @@ public class MainFrame extends JFrame {
         jplsouth.add(jspD, BorderLayout.CENTER);
         jplsouth.add(jbtnsend, BorderLayout.EAST);
 
-        jple.add(jtfnconnect,BorderLayout.NORTH);
-        jple.add(jbtnconnect,BorderLayout.SOUTH);
-
-
-
-
         for (int i = 0; i < jbts.length; i++) {
             jbts[i] = new JButton();
             jbts[i].setFont(new Font(null, Font.BOLD, 38));
             jbts[i].addActionListener(new NumberButtonAction(i,this));
             jplbingo.add(jbts[i]);
 
-            int finalI = i;
+            final int finalI = i;
 
-            int finalI1 = i;
+            final int finalI1 = i;
             jbtnstart.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -91,7 +82,6 @@ public class MainFrame extends JFrame {
         cp.add(jplbingo, BorderLayout.CENTER);
         cp.add(jspU, BorderLayout.NORTH);
         cp.add(jplsouth, BorderLayout.SOUTH);
-        cp.add(jple, BorderLayout.EAST);
 
         jspU.setPreferredSize(new Dimension(400, 50));
         jspD.setPreferredSize(new Dimension(500, 50));
@@ -131,26 +121,24 @@ public class MainFrame extends JFrame {
             }
         });
 
-        jbtnconnect.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainFrame.this.connect();
-                MainFrame.this.checkProgress();
-            }
-        });
-
         checkProgress();
 
         jbtnsend.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                Sever serer = new Sever();
+
                 String input;
                 input=jtaD.getText();
                 String get=String.valueOf(input);
                 jtaU.append(get+"\n");
                 jtaD.setText("");
+
+                serer.setMen(input);
             }
         });
+
 
     }
 
@@ -181,36 +169,11 @@ public class MainFrame extends JFrame {
             }
         }
     }
-    private void connect(){
-        String input;
-        input=jtfnconnect.getText();
-
-
-
-    }
 
     int temp_line = 0;
 
     private void checkProgress() {
-        if(jbtnconnect ) {
-            jbtnstart.setEnabled(true);
-            jbtnclear.setEnabled(true);
-            jbtnauto.setEnabled(true);
-            jbtnsend.setEnabled(true);
-
-        } if(jbtnconnect){
-            jbtnstart.setEnabled(false);
-            jbtnclear.setEnabled(false);
-            jbtnauto.setEnabled(false);
-            jbtnsend.setEnabled(false);
-        }
-            return;
-        }
-
-
-
         for (int i = 0; i < jbts.length; i++) {
-
             if(jbts[i].getText().equals("")){
                 jbtnstart.setEnabled(false);
                 jbtnclear.setEnabled(true);
@@ -269,7 +232,7 @@ public class MainFrame extends JFrame {
         final int pos;
         final MainFrame core;
 
-        private NumberButtonAction(int pos,MainFrame core) {
+        private NumberButtonAction(int pos, MainFrame core) {
             this.pos = pos;
             this.core = core;
         }
@@ -283,8 +246,7 @@ public class MainFrame extends JFrame {
                 core.chooseNumber(pos);
             }
             core.checkProgress();
+
         }
-
     }
-
 }
