@@ -38,13 +38,14 @@ public class ClientFrame extends JFrame {
 
     private boolean room = false;
     private String roomID = "";
-    private int width = -1;
-    private int height = -1;
+    public int width = -1;
+    public int height = -1;
     private int num = 0;
     private int[] nums;
     private boolean ready = false;
     private boolean start = false;
     private boolean yourturn = false;
+    private boolean roomReady = false; // 所有玩家準備  室長開始按鈕
 
     public ClientFrame() {
         regElement();
@@ -262,7 +263,11 @@ public class ClientFrame extends JFrame {
                     }
                     for (JButton auto : this.getButton("auto")) {
                         auto.setText("開始");
-                        auto.setEnabled(false);
+                        if (this.roomReady) {
+                            auto.setEnabled(true);
+                        } else {
+                            auto.setEnabled(false);
+                        }
                     }
                     for (JButton clear : this.getButton("clear")) {
                         clear.setEnabled(false);
@@ -379,15 +384,9 @@ public class ClientFrame extends JFrame {
     }
 
     public void readyC(boolean flag) {
-        if (this.ready && flag) {
-            for (JButton auto : this.getButton("auto")) {
-                auto.setEnabled(true);
-            }
-        } else {
-            for (JButton auto : this.getButton("auto")) {
-                auto.setEnabled(false);
-            }
-        }
+        this.roomReady = flag;
+        if (this.roomReady)
+            this.checkProgress();
     }
 
     public void ready(boolean flag) {
@@ -400,7 +399,6 @@ public class ClientFrame extends JFrame {
         if (this.start) {
             this.checkProgress();
         } else {
-            this.clear();
             this.ready(false);
         }
     }

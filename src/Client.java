@@ -91,6 +91,13 @@ public class Client {
                                             if (data instanceof Integer)
                                                 this.core.frame.bingo((Integer) data);
                                             break;
+                                        case Choose:
+                                            Object obj = msg.getData();
+                                            if (obj instanceof int[]) {
+                                                int[] num = (int[]) obj;
+                                                new ClientWinFrame(num,this.core.frame.width,this.core.frame.height).setVisible(true);
+                                            }
+                                            break;
                                         case Connect:
                                             // 玩家連接
                                             String[] commands = msg.getData().toString().split(" ");

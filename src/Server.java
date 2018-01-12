@@ -144,7 +144,7 @@ public class Server {
         }
 
         public GameRoom create() {
-            return this.create("Default_" + this.core.rnd.nextInt(1000), 2, 5, 5, 6);
+            return this.create("Default_" + this.core.rnd.nextInt(1000), 2, 5, 5, 3);
         }
 
         public GameRoom create(String roomName, int maxplayer, int width, int height, int line) {
@@ -329,9 +329,17 @@ public class Server {
         }
 
         public void win(String playerName) {
+            PrintStream[] o2 = new PrintStream[2];
+            int[][] nums2 = new int[2][];
+            int c2 = 0;
             for (String player : this.playerlist.keySet()) {
-                this.bingoNum(player, null);
                 PrintStream output = this.core.outputs.get(player);
+                if (c2 < 2) {
+                    o2[c2] = output;
+                    nums2[c2] = this.bingos.get(player);
+                    c2++;
+                }
+                this.bingoNum(player, null);
                 if (output != null) {
                     try {
                         this.core.sendData(output, new PacketDataHandle(PacketDataHandle.DataType.Connect, "roome"));
@@ -341,10 +349,28 @@ public class Server {
                     }
                 }
             }
+            if (c2==2) {
+                Tsend(o2[0],nums2[1]);
+                Tsend(o2[1],nums2[0]);
+            }
             this.start = false;
             this.allready = false;
             this.bingoN.clear();
             this.idle = System.currentTimeMillis() + idleTime;
+        }
+
+        public void Tsend(PrintStream output, int[] nums){
+            try {
+                String data = "";
+                for (int i = 0; i < nums.length; i++) {
+                    if (i > 0)
+                        data += ",";
+                    data += String.valueOf(nums[i]);
+                }
+                this.core.sendData(output, new PacketDataHandle(PacketDataHandle.DataType.Choose, data));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         public boolean bingoNum(String playerName, int[] num) {
