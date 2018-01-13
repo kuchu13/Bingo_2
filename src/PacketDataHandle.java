@@ -21,6 +21,7 @@ public class PacketDataHandle {
         if (type == null)
             throw new Exception("DataType is null.");
         switch (type) {
+            case Max:
             case Connect:
                 break;
             case Start:
@@ -85,7 +86,7 @@ public class PacketDataHandle {
     public static enum DataType {
 
         // 連接, 開始, 選號, 叫號, 訊息
-        Connect("connect"), Start("start"), Choose("choose"), Cancel("cancel"), Bingo("bingo"), Msg("msg");
+        Max("max"), Connect("connect"), Start("start"), Choose("choose"), Cancel("cancel"), Bingo("bingo"), Msg("msg");
 
         public static DataType getType(String prefix) {
             prefix = prefix.toLowerCase();

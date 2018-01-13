@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
@@ -42,7 +43,15 @@ public class Server {
             System.out.println("等待客戶端的請求中...");
             while (true) {
                 Socket s = svs.accept();
+                PrintStream output = new PrintStream(s.getOutputStream());
                 String playerName;
+                if (clients.size() >= 2) {
+                    this.sendData(output, new PacketDataHandle(PacketDataHandle.DataType.Max, ""));
+                    s.shutdownInput();
+                    s.shutdownOutput();
+                    s.close();
+                    continue;
+                }
                 do {
                     playerName = "Player" + rnd.nextInt(2);//0~1
                 } while (clients.containsKey(playerName));
@@ -51,7 +60,6 @@ public class Server {
                 this.clients.put(playerName, client);
                 this.rooms.put(playerName, null);
                 System.out.println("客戶端連接: " + playerName + s.getLocalSocketAddress());
-                PrintStream output = new PrintStream(s.getOutputStream());
                 this.sendJoin(playerName);
                 this.outputs.put(playerName, output);
                 this.sendData(output, new PacketDataHandle(PacketDataHandle.DataType.Connect, "setname " + playerName));
@@ -653,6 +661,12 @@ public class Server {
                                     if (chat != null)
                                         System.out.println("[Chat] " + chat);
                                     break;
+                                case Connect:
+                                    if (msg.getData().toString().equals("leave")) {
+                                        Process client = this.core.clients.get(this.playerName);
+                                        client.disconnect();
+                                    }
+                                    break;
                                 case Start:
                                     // 客戶端加入房間
                                     PrintStream output = this.core.outputs.get(this.playerName);
@@ -808,10 +822,22 @@ public class Server {
                 GameRoom room = this.core.getPlayerRoom(this.playerName);
                 if (room != null)
                     room.leaveRoom(this.playerName);
-
                 this.core.clients.remove(this.playerName);
                 this.core.rooms.remove(this.playerName);
                 this.core.outputs.remove(this.playerName);
+                if (this.sock != null) {
+                    try {
+                        this.sock.close();
+                    } catch (IOException e) {
+                    }
+                }
+            }
+        }
+
+        public void disconnect(){
+            try {
+                this.sock.close();
+            } catch (IOException e) {
             }
         }
 
