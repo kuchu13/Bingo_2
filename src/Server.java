@@ -44,7 +44,7 @@ public class Server {
                 Socket s = svs.accept();
                 String playerName;
                 do {
-                    playerName = "Player" + rnd.nextInt(1000);
+                    playerName = "Player" + rnd.nextInt(2);//0~1
                 } while (clients.containsKey(playerName));
                 Process client = new Process(this, playerName, s);
                 new Thread(client).start();
@@ -144,7 +144,7 @@ public class Server {
         }
 
         public GameRoom create() {
-            return this.create("Default_" + this.core.rnd.nextInt(1000), 2, 5, 5, 3);
+            return this.create("房間" + this.core.rnd.nextInt(2), 2, 5, 5, 3);
         }
 
         public GameRoom create(String roomName, int maxplayer, int width, int height, int line) {
