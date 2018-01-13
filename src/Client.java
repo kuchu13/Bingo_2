@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+=======
+import java.io.InputStream;
+import java.io.OutputStream;
+>>>>>>> origin/master
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -17,6 +22,7 @@ public class Client {
     PrintStream writer;
 
     public static void main(String[] args) {
+<<<<<<< HEAD
         Client.core = new Client(new ClientFrame());
     }
 
@@ -44,6 +50,25 @@ public class Client {
         } catch (IOException e) {
             this.frame.addChat("[訊息] 建立連線失敗.");
             System.out.println("建立連線失敗");
+=======
+        byte buff[ ]=new byte[1024];
+        String str = "hihihi";
+        try{
+            System.out.println("正在與伺服器建立連線...");
+            Socket s=new Socket("127.2.2.1",2525);
+            System.out.println("已經與伺服器取得連線...");
+            InputStream in=s.getInputStream();
+            OutputStream out=s.getOutputStream();
+            int n=in.read(buff);
+            out.write(str.getBytes());
+            System.out.print("從伺服器端收到:");
+            System.out.println(new String(buff,0,n));
+            in.close();
+            out.close();
+            s.close();
+        }catch (Exception e){
+            System.out.println("發生了"+e+"例外");
+>>>>>>> origin/master
         }
     }
 
